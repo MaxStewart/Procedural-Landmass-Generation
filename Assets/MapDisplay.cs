@@ -6,6 +6,10 @@ public class MapDisplay : MonoBehaviour
 {
     public Renderer textureRenderer;
 
+    /// <summary>
+    /// Draws the given noiseMap to a 2D texture
+    /// </summary>
+    /// <param name="noiseMap">The noise Map to draw on the texture</param>
     public void DrawNoiseMap(float[,] noiseMap)
     {
         int width = noiseMap.GetLength(0);

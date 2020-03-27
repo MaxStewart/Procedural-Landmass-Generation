@@ -19,6 +19,9 @@ public class MapGenerator : MonoBehaviour
 
     public bool autoUpdate;
 
+    /// <summary>
+    /// Method makes the calls to generate noise map and display the noise map on the texture.
+    /// </summary>
     public void GenerateMap()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octave, persistance, lacurnarity, offset);
@@ -27,6 +30,9 @@ public class MapGenerator : MonoBehaviour
         display.DrawNoiseMap(noiseMap);
     }
 
+    /// <summary>
+    /// Forces the public variables to be within the defined range
+    /// </summary>
     private void OnValidate()
     {
         if(mapWidth < 1)

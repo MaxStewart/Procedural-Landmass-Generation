@@ -5,6 +5,18 @@ using UnityEngine;
 public static class Noise
 {
     
+    /// <summary>
+    /// Generates a noise map using perlin noise
+    /// </summary>
+    /// <param name="mapWidth">Width of the final map</param>
+    /// <param name="MapHeight">Height of the final map</param>
+    /// <param name="seed">Seed value to generate a specific map</param>
+    /// <param name="scale"></param>
+    /// <param name="octaves"></param>
+    /// <param name="persistance"></param>
+    /// <param name="lacunarity"></param>
+    /// <param name="offset"></param>
+    /// <returns>Returns the noise map as a float array</returns>
     public static float[,] GenerateNoiseMap(int mapWidth, int MapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
     {
         float[,] noiseMap = new float[mapWidth, MapHeight];
