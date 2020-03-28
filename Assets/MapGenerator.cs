@@ -5,6 +5,14 @@ using UnityEngine;
 public class MapGenerator : MonoBehaviour
 {
 
+    public enum DrawMode
+    {
+        noiseMap,
+        colorMap
+    }
+
+    public DrawMode drawMode;
+
     public int mapWidth;
     public int mapHeight;
     public float noiseScale;
@@ -19,15 +27,41 @@ public class MapGenerator : MonoBehaviour
 
     public bool autoUpdate;
 
+    public TerrainTypes[] regions;
+
     /// <summary>
-    /// Method makes the calls to generate noise map and display the noise map on the texture.
+    /// Method makes the calls to generate noise map and display the noise map on the texture with correct height colors.
     /// </summary>
     public void GenerateMap()
     {
         float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octave, persistance, lacurnarity, offset);
+        Color[] colorMap = new Color[mapWidth * mapHeight];
+
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                float currentHeight = noiseMap[x, y];
+                for (int i = 0; i < regions.Length; i++)
+                {
+                    if(currentHeight <= regions[i].height)
+                    {
+                        colorMap[y * mapWidth + x] = regions[i].color;
+                        break;
+                    }
+                }
+            }
+        }
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
-        display.DrawNoiseMap(noiseMap);
+        if(drawMode == DrawMode.noiseMap)
+        {
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
+        }
+        else
+        {
+            display.DrawTexture(TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+        }
     }
 
     /// <summary>
@@ -52,4 +86,13 @@ public class MapGenerator : MonoBehaviour
             octave = 0;
         }
     }
+}
+
+
+[System.Serializable]
+public struct TerrainTypes
+{
+    public string name;
+    public float height;
+    public Color color;
 }
